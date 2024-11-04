@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Warkop Jambu</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">Warkop jambu</div>
+      <button class="mobile-menu-btn">☰</button>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="cart-icon">
+        🛒
+        <span class="cart-count">0</span>
+      </div>
+    </nav>
+
+    <div class="cart-modal">
+      <h2>Your Cart</h2>
+      <div class="cart-items"></div>
+      <div class="cart-total">
+        <h3>Total: Rp 0</h3>
+      </div>
+      <button
+        class="checkout-btn cta-button"
+        style="width: 100%; margin-top: 1rem"
+      >
+        Checkout
+      </button>
+    </div>
+
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1>Selamat Datang di Warkop jambu</h1>
+        <p></p>
+        <button class="cta-button">Lihat Menu Kami</button>
+      </div>
+    </section>
+
+    <section class="menu-section" id="menu">
+      <div class="section-title">
+        <h2>Menu Unggulan</h2>
+      </div>
+      <div class="menu-filters">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="main">Main Course</button>
+        <button class="filter-btn" data-category="appetizer">Appetizers</button>
+        <button class="filter-btn" data-category="dessert">Desserts</button>
+      </div>
+      <div class="menu-grid"></div>
+    </section>
+
+    <script src="scripts.js"></script>
+  </body>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    :root {
+      --primary: #ff6b6b;
+      --secondary: #4ecdc4;
+      --dark: #2d3436;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: white;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+    }
+
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      margin-left: 2rem;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .cart-modal {
+      position: fixed;
+      right: -400px;
+      top: 0;
+      width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+      transition: right 0.3s;
+      z-index: 1001;
+      padding: 2rem;
+    }
+
+    .cart-modal.open {
+      right: 0;
+    }
+
+    .cart-modal h2 {
+      margin-bottom: 1rem;
+    }
+
+    .cart-items {
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .quantity-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .menu-filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #eee;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .menu-item {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.3s;
+    }
+
+    .menu-item.hidden {
+      display: none;
+    }
+
+    .menu-item.fade-out {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .add-to-cart-btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: transform 0.3s;
+    }
+
+    .add-to-cart-btn:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: 1rem;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .cart-modal {
+        width: 100%;
+        right: -100%;
+      }
+    }
+  </style>
+</head>
